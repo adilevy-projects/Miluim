@@ -15,32 +15,30 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;font-family:'Rubik',sans-serif;background:var(--k-bg);color:var(--k-text);direction:rtl;}
-
-/* HEADER */
 .kheader{background:var(--k-dark);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
 .kheader-left{display:flex;align-items:center;gap:12px;}
 .klogo{width:38px;height:38px;background:var(--k-base);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-.kheader h1{font-size:17px;font-weight:700;color:#e8ebd0;letter-spacing:.2px;}
+.kheader h1{font-size:17px;font-weight:700;color:#e8ebd0;}
 .kheader p{font-size:11px;color:var(--k-light);margin-top:2px;}
-.kbtn-row{display:flex;gap:8px;}
-.kbtn{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;border:none;font-family:'Rubik',sans-serif;transition:all .15s;letter-spacing:.1px;}
-.kbtn-team{background:var(--k-base);color:#f0f2e0;box-shadow:0 1px 3px rgba(0,0,0,.2);}
-.kbtn-team:hover{background:var(--k-mid);transform:translateY(-1px);}
-.kbtn-ai{background:var(--k-amber);color:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);}
-.kbtn-ai:hover{background:#a06d08;transform:translateY(-1px);}
-
-/* STATS */
+.kbtn-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.kbtn{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;border:none;font-family:'Rubik',sans-serif;transition:all .15s;}
+.kbtn-refresh{background:var(--k-base);color:#f0f2e0;}.kbtn-refresh:hover{background:var(--k-mid);}
+.kbtn-sheet{background:transparent;color:var(--k-pale);border:1px solid #5a6040;font-size:12px;padding:6px 12px;}.kbtn-sheet:hover{background:#4a4d38;}
 .kstats{display:flex;gap:10px;padding:12px 24px;background:var(--k-dark);border-top:1px solid #4a4d38;}
 .kstat{background:#4a4d38;border-radius:8px;padding:8px 14px;flex:1;text-align:center;}
 .kstat-num{font-size:22px;font-weight:700;color:#d6d9b8;}
 .kstat-lbl{font-size:11px;color:var(--k-light);margin-top:2px;font-weight:500;}
-
-/* TABLE */
+.status-bar{background:var(--k-dark);border-top:1px solid #4a4d38;padding:6px 24px;display:flex;align-items:center;gap:8px;}
+.status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.status-dot.ok{background:#6ab04c;}.status-dot.loading{background:var(--k-amber);animation:pulse 1s infinite;}
+.status-dot.err{background:#e55039;}
+.status-text{font-size:11px;color:var(--k-light);}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
 .ktable-wrap{overflow-x:auto;margin:16px;border-radius:10px;border:1px solid var(--k-border);background:var(--k-card);box-shadow:0 2px 8px rgba(58,61,46,.08);}
 table.main-t{border-collapse:collapse;width:100%;font-size:12px;}
-table.main-t th{background:var(--k-dark);color:var(--k-pale);font-weight:600;padding:7px 3px;text-align:center;border-bottom:1px solid #4a4d38;border-right:1px solid #4a4d38;white-space:nowrap;font-family:'Rubik',sans-serif;}
+table.main-t th{background:var(--k-dark);color:var(--k-pale);font-weight:600;padding:7px 3px;text-align:center;border-bottom:1px solid #4a4d38;border-right:1px solid #4a4d38;white-space:nowrap;}
 table.main-t th.nc{min-width:130px;text-align:right;padding-right:14px;font-size:11px;position:sticky;right:0;z-index:3;background:var(--k-dark);}
-table.main-t td{padding:5px 3px;text-align:center;border-bottom:.5px solid var(--k-border);border-right:.5px solid var(--k-border);transition:background .1s;}
+table.main-t td{padding:5px 3px;text-align:center;border-bottom:.5px solid var(--k-border);border-right:.5px solid var(--k-border);}
 table.main-t td.ncell{text-align:right;padding:7px 14px;background:var(--k-card);position:sticky;right:0;z-index:1;border-right:2px solid var(--k-border);min-width:130px;}
 table.main-t tr:hover td{background:rgba(168,173,126,.08);}
 table.main-t tr:hover td.ncell{background:#f2f5e8;}
@@ -58,67 +56,11 @@ tr:last-child td{border-bottom:none;}th:last-child,td:last-child{border-right:no
 .pres{background:#e8f5e9;color:#2e7d32;font-size:10px;padding:2px 7px;border-radius:20px;font-weight:600;}
 .abs{background:#fdecea;color:#a32d2d;font-size:10px;padding:2px 7px;border-radius:20px;font-weight:600;}
 .emsg{text-align:center;padding:3rem;color:var(--k-muted);font-size:14px;line-height:2;}
-
-/* LEGEND */
 .legend{display:flex;gap:14px;align-items:center;padding:10px 20px;border-top:1px solid var(--k-border);background:var(--k-card);border-radius:0 0 10px 10px;margin:0 16px 16px;flex-wrap:wrap;}
 .li{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--k-muted);}
 .ld{width:11px;height:11px;border-radius:3px;}
-
-/* MODAL OVERLAY */
-.overlay{display:none;position:fixed;inset:0;background:rgba(40,42,30,.6);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(2px);}
-.overlay.open{display:flex;}
-.modal{background:var(--k-card);border-radius:14px;border:1px solid var(--k-border);padding:24px 26px;width:440px;max-width:96vw;box-shadow:0 16px 48px rgba(0,0,0,.22);max-height:92vh;overflow-y:auto;animation:popIn .18s ease;}
-.modal-wide{width:740px;}
-@keyframes popIn{from{opacity:0;transform:scale(.96) translateY(8px);}to{opacity:1;transform:scale(1) translateY(0);}}
-.modal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
-.modal-hdr-left{display:flex;align-items:center;gap:10px;}
-.modal-hdr h3{font-size:17px;font-weight:700;color:var(--k-dark);}
-.picon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#f0f2e0;font-size:17px;flex-shrink:0;}
-.xbtn{background:none;border:none;cursor:pointer;color:var(--k-muted);font-size:26px;line-height:1;padding:0 4px;border-radius:6px;font-family:'Rubik',sans-serif;transition:all .12s;}
-.xbtn:hover{background:var(--k-bg);color:var(--k-dark);}
-
-/* FORM */
-.field{margin-bottom:13px;}
-.field label{display:block;font-size:11px;font-weight:700;color:var(--k-muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.6px;}
-.field input,.field select{width:100%;padding:9px 12px;border:1.5px solid var(--k-border);border-radius:8px;background:#fff;color:var(--k-text);font-size:14px;font-family:'Rubik',sans-serif;transition:border .15s;}
-.field input:focus,.field select:focus{outline:none;border-color:var(--k-base);box-shadow:0 0 0 3px rgba(122,127,85,.12);}
-.hint{font-size:12px;color:var(--k-muted);margin-bottom:14px;line-height:1.7;background:rgba(168,173,126,.12);border-radius:8px;padding:10px 12px;border-right:3px solid var(--k-light);}
-.pbtns{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;}
-.mb{padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:1.5px solid var(--k-border);background:#fff;color:var(--k-text);font-family:'Rubik',sans-serif;transition:all .12s;}
-.mb:hover{background:var(--k-bg);}
-.mb-ok{background:var(--k-mid);color:#f0f2e0;border-color:var(--k-mid);}
-.mb-ok:hover{background:var(--k-dark);}
-.mb-add{background:var(--k-base);color:#f0f2e0;border-color:var(--k-base);font-size:13px;padding:8px 14px;}
-.mb-add:hover{background:var(--k-mid);}
-
-/* TEAM TABLE */
-.ttwrap{border:1px solid var(--k-border);border-radius:10px;overflow:hidden;margin-bottom:16px;}
-table.tt{border-collapse:collapse;width:100%;font-size:13px;}
-table.tt th{background:var(--k-dark);color:var(--k-pale);font-weight:600;padding:9px 12px;text-align:right;border-bottom:1px solid #4a4d38;font-size:11px;text-transform:uppercase;letter-spacing:.5px;font-family:'Rubik',sans-serif;}
-table.tt td{padding:8px 12px;border-bottom:.5px solid var(--k-border);vertical-align:middle;}
-table.tt tr:last-child td{border-bottom:none;}
-table.tt tr:hover td{background:#f5f5ee;}
-table.tt select,table.tt input[type=text]{padding:5px 9px;border:1.5px solid var(--k-border);border-radius:7px;background:#fff;color:var(--k-text);font-size:12px;width:100%;font-family:'Rubik',sans-serif;}
-table.tt select:focus,table.tt input:focus{outline:none;border-color:var(--k-base);}
-.stog{display:flex;gap:5px;}
-.sb{padding:5px 12px;font-size:11px;font-weight:600;border-radius:7px;cursor:pointer;border:1.5px solid var(--k-border);background:#fff;color:var(--k-muted);font-family:'Rubik',sans-serif;transition:all .12s;}
-.sb:hover{background:var(--k-bg);}
-.sb.sp{background:#e8f5e9;color:#2e7d32;border-color:#a5d6a7;}
-.sb.sa{background:#fdecea;color:#a32d2d;border-color:#ef9a9a;}
-.delbtn{background:none;border:none;cursor:pointer;color:var(--k-muted);padding:5px 7px;border-radius:6px;font-size:16px;transition:all .12s;}
-.delbtn:hover{color:#a32d2d;background:#fdecea;}
-.addrow{padding:13px 14px;background:var(--k-bg);border-top:1px solid var(--k-border);display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;}
-.addrow .fi{display:flex;flex-direction:column;gap:4px;flex:1;min-width:90px;}
-.addrow .fi label{font-size:10px;font-weight:700;color:var(--k-muted);text-transform:uppercase;letter-spacing:.5px;}
-.addrow .fi input,.addrow .fi select{padding:7px 9px;border:1.5px solid var(--k-border);border-radius:7px;background:#fff;color:var(--k-text);font-size:12px;font-family:'Rubik',sans-serif;}
-
-/* DATE RANGE PICKER */
-.date-row{display:flex;gap:12px;}
-.date-row .field{flex:1;}
-
-/* TOAST */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--k-dark);color:#e8ebd0;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;z-index:2000;opacity:0;transition:opacity .3s;pointer-events:none;}
-.toast.show{opacity:1;}
+.spin{display:inline-block;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
 </style>
 </head>
 <body>
@@ -132,16 +74,21 @@ table.tt select:focus,table.tt input:focus{outline:none;border-color:var(--k-bas
     </div>
   </div>
   <div class="kbtn-row">
-    <button class="kbtn kbtn-team" onclick="openTeam()">👥 ניהול צוות</button>
-    <button class="kbtn kbtn-ai" onclick="openConstraint()">📅 הוסף אילוץ</button>
+    <button class="kbtn kbtn-sheet" onclick="openSheet()">📊 עריכה בשיט</button>
+    <button class="kbtn kbtn-refresh" onclick="loadData()"><span id="refreshIcon">🔄</span> רענן נתונים</button>
   </div>
 </div>
 
 <div class="kstats">
-  <div class="kstat"><div class="kstat-num" id="sM">0</div><div class="kstat-lbl">חברי צוות</div></div>
-  <div class="kstat"><div class="kstat-num" id="sP">0</div><div class="kstat-lbl">מגיעים</div></div>
-  <div class="kstat"><div class="kstat-num" id="sC">0</div><div class="kstat-lbl">אילוצים</div></div>
+  <div class="kstat"><div class="kstat-num" id="sM">—</div><div class="kstat-lbl">חברי צוות</div></div>
+  <div class="kstat"><div class="kstat-num" id="sP">—</div><div class="kstat-lbl">מגיעים</div></div>
+  <div class="kstat"><div class="kstat-num" id="sC">—</div><div class="kstat-lbl">אילוצים</div></div>
   <div class="kstat"><div class="kstat-num">83</div><div class="kstat-lbl">ימי מילואים</div></div>
+</div>
+
+<div class="status-bar">
+  <div class="status-dot loading" id="statusDot"></div>
+  <span class="status-text" id="statusText">טוען נתונים מגוגל שיט...</span>
 </div>
 
 <div class="ktable-wrap" id="tw">
@@ -158,116 +105,105 @@ table.tt select:focus,table.tt input:focus{outline:none;border-color:var(--k-bas
   <div class="li"><span class="rp rm">מודיעין</span></div>
 </div>
 
-<!-- TEAM MODAL -->
-<div class="overlay" id="teamOv" onclick="bgClose(event,'teamOv',true)">
-  <div class="modal modal-wide">
-    <div class="modal-hdr">
-      <div class="modal-hdr-left">
-        <div class="picon" style="background:var(--k-base)">👥</div>
-        <h3>ניהול צוות</h3>
-        <span style="font-size:12px;color:var(--k-muted);margin-right:8px" id="tc"></span>
-      </div>
-      <button class="xbtn" onclick="closeTeam()">×</button>
-    </div>
-    <div class="ttwrap">
-      <table class="tt">
-        <thead><tr>
-          <th style="min-width:145px">שם</th>
-          <th style="min-width:95px">סבב</th>
-          <th style="min-width:95px">תפקיד</th>
-          <th style="min-width:135px">סטטוס</th>
-          <th style="width:38px"></th>
-        </tr></thead>
-        <tbody id="ttb"></tbody>
-      </table>
-      <div class="addrow">
-        <div class="fi"><label>שם מלא</label><input type="text" id="nn" placeholder="שם..." onkeydown="if(event.key==='Enter')addM()"/></div>
-        <div class="fi"><label>סבב</label>
-          <select id="nr">
-            <option value="">—</option>
-            <option>סבב א</option><option>סבב ב</option><option>סבב ג</option><option>כל התקופה</option>
-          </select>
-        </div>
-        <div class="fi"><label>תפקיד</label>
-          <select id="nro">
-            <option value="">—</option>
-            <option value="סמבצ">סמבצ</option>
-            <option value="סמנא">סמנא</option>
-            <option value="סמקש">סמקש</option>
-            <option value="מודיעין">מודיעין</option>
-          </select>
-        </div>
-        <button class="mb mb-add" onclick="addM()">＋ הוסף</button>
-      </div>
-    </div>
-    <div class="pbtns"><button class="mb mb-ok" onclick="closeTeam()">סגור</button></div>
-  </div>
-</div>
-
-<!-- CONSTRAINT MODAL -->
-<div class="overlay" id="conOv" onclick="bgClose(event,'conOv',false)">
-  <div class="modal">
-    <div class="modal-hdr">
-      <div class="modal-hdr-left">
-        <div class="picon" style="background:var(--k-amber)">📅</div>
-        <h3>הוספת אילוץ</h3>
-      </div>
-      <button class="xbtn" onclick="closeConstraint()">×</button>
-    </div>
-    <div class="hint">
-      בחרי חבר צוות וטווח תאריכים שבהם הוא <strong>לא זמין</strong>.<br>
-      התאריכים יסומנו בצהוב בלוח.
-    </div>
-    <div class="field">
-      <label>חבר צוות</label>
-      <select id="cMember"><option value="">— בחר חבר —</option></select>
-    </div>
-    <div class="date-row">
-      <div class="field">
-        <label>מתאריך</label>
-        <input type="date" id="cFrom" min="2026-06-28" max="2026-09-18" value="2026-07-01"/>
-      </div>
-      <div class="field">
-        <label>עד תאריך</label>
-        <input type="date" id="cTo" min="2026-06-28" max="2026-09-18" value="2026-07-01"/>
-      </div>
-    </div>
-    <div class="pbtns">
-      <button class="mb" onclick="closeConstraint()">ביטול</button>
-      <button class="mb mb-ok" onclick="addConstraint()">✓ אשר והוסף</button>
-    </div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
 <script>
-const S=new Date('2026-06-28'),E=new Date('2026-09-18');
-const TODAY=new Date();
+const SHEET_ID = '1wWmmStmT7Xx0X_2iBDt_Bu7lLmTp47WE';
+const PUB_ID = '2PACX-1vQXIJJc-KoIBc3HLoQCA3gJdR4_IXNAp0rHiq0v7P4cE38pIzEM8Dfu3c6YGrC4NA';
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`;
+const MEMBERS_URL = `https://docs.google.com/spreadsheets/d/e/${PUB_ID}/pub?gid=2053818780&single=true&output=csv`;
+const CONSTRAINTS_URL = `https://docs.google.com/spreadsheets/d/e/${PUB_ID}/pub?gid=896959266&single=true&output=csv`;
+
+const S=new Date('2026-06-28'),E=new Date('2026-09-18'),TODAY=new Date();
 let members=[],constraints=[],tidx=-1;
 
-function gd(){const d=[],c=new Date(S);while(c<=E){d.push(new Date(c));c.setDate(c.getDate()+1);}return d;}
-const DT=gd();
+function getDates(){const d=[],c=new Date(S);while(c<=E){d.push(new Date(c));c.setDate(c.getDate()+1);}return d;}
+const DATES=getDates();
 const HM=['','ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר'];
 const HD=['א','ב','ג','ד','ה','ו','ש'];
 function dk(d){return d.toISOString().slice(0,10);}
 const TDK=dk(TODAY);
 function rc(r){if(r==='סמבצ')return'rs';if(r==='סמנא')return'rn';if(r==='סמקש')return'rk';if(r==='מודיעין')return'rm';return'';}
 
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+function setStatus(type, msg){
+  const dot=document.getElementById('statusDot');
+  const txt=document.getElementById('statusText');
+  dot.className='status-dot '+type;
+  txt.textContent=msg;
+}
+
+function parseCSV(text){
+  const lines=text.trim().split('\n').slice(1); // skip header
+  return lines.map(l=>{
+    const cols=[];
+    let cur='',inQ=false;
+    for(let i=0;i<l.length;i++){
+      if(l[i]==='"'){inQ=!inQ;}
+      else if(l[i]===','&&!inQ){cols.push(cur.trim());cur='';}
+      else cur+=l[i];
+    }
+    cols.push(cur.trim());
+    return cols;
+  }).filter(r=>r[0]);
+}
+
+async function fetchCSV(url){
+  const res=await fetch(url+'&cachebust='+Date.now());
+  return await res.text();
+}
+
+function parseMembers(rows){
+  return rows.map(r=>({
+    name: r[0]||'',
+    round: r[1]||'',
+    role: r[2]||'',
+    status: r[3]||''
+  })).filter(m=>m.name);
+}
+
+function parseConstraints(rows){
+  return rows.map(r=>({
+    member: r[0]||'',
+    from: (r[1]||'').slice(0,10),
+    to: (r[2]||'').slice(0,10)
+  })).filter(c=>c.member&&c.from&&c.to);
+}
+
+async function loadData(){
+  const icon=document.getElementById('refreshIcon');
+  icon.className='spin';
+  setStatus('loading','טוען נתונים מגוגל שיט...');
+  try{
+    const [mText, cText] = await Promise.all([
+      fetchCSV(MEMBERS_URL),
+      fetchCSV(CONSTRAINTS_URL)
+    ]);
+    members = parseMembers(parseCSV(mText));
+    constraints = parseConstraints(parseCSV(cText));
+    const now = new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
+    setStatus('ok',`עודכן בהצלחה · ${members.length} חברים · ${constraints.length} אילוצים · ${now}`);
+    render();
+  }catch(e){
+    setStatus('err','שגיאה בטעינת הנתונים — בדקי שהשיט מפורסם לאינטרנט');
+    console.error(e);
+  }
+  icon.className='';
+}
+
+function openSheet(){
+  window.open(SHEET_URL,'_blank');
+}
 
 function bh(){
   const h=document.getElementById('th');h.innerHTML='';
   const mr=document.createElement('tr');
   const nt=document.createElement('th');nt.className='nc';nt.rowSpan=2;nt.textContent='שם / תפקיד';mr.appendChild(nt);
   let cm=-1,cnt=0,ft=null;
-  DT.forEach((d,i)=>{
+  DATES.forEach((d,i)=>{
     if(d.getMonth()!==cm){if(ft)ft.colSpan=cnt;cm=d.getMonth();cnt=0;ft=document.createElement('th');ft.textContent=HM[d.getMonth()+1];mr.appendChild(ft);}
-    cnt++;if(i===DT.length-1&&ft)ft.colSpan=cnt;
+    cnt++;if(i===DATES.length-1&&ft)ft.colSpan=cnt;
   });
   h.appendChild(mr);
   const dr=document.createElement('tr');tidx=-1;
-  DT.forEach((d,i)=>{
+  DATES.forEach((d,i)=>{
     const t=document.createElement('th');
     t.innerHTML=d.getDate()+'<br><span style="font-size:9px;opacity:.5">'+HD[d.getDay()]+'</span>';
     if(d.getDay()===6)t.style.background='#4a4d38';
@@ -282,8 +218,8 @@ function bb(){
   let pc=0;
   if(!members.length){
     const tr=document.createElement('tr'),td=document.createElement('td');
-    td.colSpan=DT.length+1;td.className='emsg';
-    td.innerHTML='<div style="font-size:36px;margin-bottom:8px">👥</div>אין חברי צוות עדיין<br><span style="font-size:12px">לחץ על "ניהול צוות" כדי להתחיל</span>';
+    td.colSpan=DATES.length+1;td.className='emsg';
+    td.innerHTML='<div style="font-size:32px;margin-bottom:8px">📊</div>לא נמצאו נתונים בגוגל שיט<br><span style="font-size:12px">וודאי שגיליון "חברים" מכיל נתונים ושהשיט מפורסם לאינטרנט</span>';
     tr.appendChild(td);tb.appendChild(tr);
   } else {
     members.forEach(m=>{
@@ -296,7 +232,7 @@ function bb(){
         +(m.role?' <span class="rp '+rc(m.role)+'">'+m.role+'</span>':'')
         +(sb?' '+sb:'')+'</div>';
       tr.appendChild(nd);
-      DT.forEach(d=>{
+      DATES.forEach(d=>{
         const td=document.createElement('td');td.className='dc';
         if(d.getDay()===6)td.classList.add('shab');
         const k=dk(d);
@@ -321,88 +257,9 @@ function render(){
   },150);
 }
 
-/* TEAM */
-function openTeam(){
-  rtt();
-  document.getElementById('teamOv').classList.add('open');
-  setTimeout(()=>document.getElementById('nn').focus(),120);
-}
-function closeTeam(){document.getElementById('teamOv').classList.remove('open');render();}
-
-function rtt(){
-  document.getElementById('tc').textContent=members.length+' / 24';
-  const tb=document.getElementById('ttb');tb.innerHTML='';
-  if(!members.length){
-    const tr=document.createElement('tr'),td=document.createElement('td');
-    td.colSpan=5;td.style.cssText='text-align:center;padding:1.5rem;color:var(--k-muted);font-size:13px;';
-    td.textContent='אין חברים — הוסף מהשורה למטה';tr.appendChild(td);tb.appendChild(tr);return;
-  }
-  members.forEach((m,i)=>{
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td><input type="text" value="${m.name.replace(/"/g,'&quot;')}" oninput="members[${i}].name=this.value"/></td>
-    <td><select onchange="members[${i}].round=this.value">
-      <option value="" ${!m.round?'selected':''}>—</option>
-      ${['סבב א','סבב ב','סבב ג','כל התקופה'].map(r=>`<option ${m.round===r?'selected':''}>${r}</option>`).join('')}
-    </select></td>
-    <td><select onchange="members[${i}].role=this.value">
-      <option value="" ${!m.role?'selected':''}>—</option>
-      ${['סמבצ','סמנא','סמקש','מודיעין'].map(r=>`<option value="${r}" ${m.role===r?'selected':''}>${r}</option>`).join('')}
-    </select></td>
-    <td><div class="stog">
-      <button class="sb ${m.status==='present'?'sp':''}" onclick="ss(${i},'present')">מגיע</button>
-      <button class="sb ${m.status==='absent'?'sa':''}" onclick="ss(${i},'absent')">לא מגיע</button>
-    </div></td>
-    <td><button class="delbtn" onclick="dm(${i})" title="מחק">🗑</button></td>`;
-    tb.appendChild(tr);
-  });
-}
-
-function ss(i,s){members[i].status=members[i].status===s?'':s;rtt();}
-function dm(i){
-  if(!confirm('למחוק את '+members[i].name+'?'))return;
-  const n=members[i].name;members.splice(i,1);
-  constraints=constraints.filter(c=>c.member!==n);
-  rtt();
-}
-function addM(){
-  const name=document.getElementById('nn').value.trim();
-  if(!name)return;
-  if(members.length>=24){toast('הגעת למקסימום 24 חברים');return;}
-  if(members.some(m=>m.name===name)){toast('חבר עם שם זה כבר קיים');return;}
-  members.push({name,round:document.getElementById('nr').value,role:document.getElementById('nro').value,status:''});
-  document.getElementById('nn').value='';
-  document.getElementById('nr').value='';
-  document.getElementById('nro').value='';
-  document.getElementById('nn').focus();
-  rtt();toast('✓ '+name+' נוסף לצוות');
-}
-
-/* CONSTRAINT */
-function openConstraint(){
-  const sel=document.getElementById('cMember');
-  sel.innerHTML='<option value="">— בחר חבר —</option>';
-  members.forEach(m=>{const o=document.createElement('option');o.value=m.name;o.textContent=m.name;sel.appendChild(o);});
-  document.getElementById('conOv').classList.add('open');
-}
-function closeConstraint(){document.getElementById('conOv').classList.remove('open');}
-function addConstraint(){
-  const member=document.getElementById('cMember').value;
-  const from=document.getElementById('cFrom').value;
-  const to=document.getElementById('cTo').value;
-  if(!member){toast('יש לבחור חבר צוות');return;}
-  if(!from||!to){toast('יש לבחור תאריכים');return;}
-  if(from>to){toast('תאריך התחלה חייב להיות לפני תאריך הסיום');return;}
-  constraints.push({member,from,to});
-  closeConstraint();render();
-  const d1=new Date(from),d2=new Date(to);
-  const days=Math.round((d2-d1)/86400000)+1;
-  toast('✓ אילוץ נוסף ל'+member+' ('+days+' ימים)');
-}
-
-function bgClose(e,id,rerender){if(e.target===e.currentTarget){document.getElementById(id).classList.remove('open');if(rerender)render();}}
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeTeam();closeConstraint();}});
-
-render();
+// Auto-refresh every 60 seconds
+setInterval(loadData, 60000);
+loadData();
 </script>
 </body>
 </html>
