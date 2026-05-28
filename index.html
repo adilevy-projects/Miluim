@@ -4,44 +4,36 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>צוות מבצעים — לוח מילואים</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --k-dark:#3a3d2e;--k-mid:#5a6040;--k-base:#7a7f55;--k-light:#a8ad7e;
-  --k-pale:#d6d9b8;--k-bg:#f2f0e6;--k-card:#fafaf4;--k-border:#c8cba8;
-  --k-amber:#c8860a;--k-amber-bg:#fdf3d8;--k-text:#2c2e1e;--k-muted:#6b6e50;
-}
+:root{--k-dark:#3a3d2e;--k-mid:#5a6040;--k-base:#7a7f55;--k-light:#a8ad7e;--k-pale:#d6d9b8;--k-bg:#f2f0e6;--k-card:#fafaf4;--k-border:#c8cba8;--k-amber:#c8860a;--k-amber-bg:#fdf3d8;--k-text:#2c2e1e;--k-muted:#6b6e50;}
 *{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;font-family:'Rubik',sans-serif;background:var(--k-bg);color:var(--k-text);direction:rtl;}
+html,body{font-family:'Rubik',sans-serif;background:var(--k-bg);color:var(--k-text);direction:rtl;}
 .kheader{background:var(--k-dark);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
 .kheader-left{display:flex;align-items:center;gap:12px;}
-.klogo{width:38px;height:38px;background:var(--k-base);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.klogo{width:38px;height:38px;background:var(--k-base);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:20px;}
 .kheader h1{font-size:17px;font-weight:700;color:#e8ebd0;}
 .kheader p{font-size:11px;color:var(--k-light);margin-top:2px;}
-.kbtn-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
 .kbtn{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;border:none;font-family:'Rubik',sans-serif;transition:all .15s;}
 .kbtn-refresh{background:var(--k-base);color:#f0f2e0;}.kbtn-refresh:hover{background:var(--k-mid);}
-.kbtn-sheet{background:transparent;color:var(--k-pale);border:1px solid #5a6040;font-size:12px;padding:6px 12px;}.kbtn-sheet:hover{background:#4a4d38;}
 .kstats{display:flex;gap:10px;padding:12px 24px;background:var(--k-dark);border-top:1px solid #4a4d38;}
 .kstat{background:#4a4d38;border-radius:8px;padding:8px 14px;flex:1;text-align:center;}
 .kstat-num{font-size:22px;font-weight:700;color:#d6d9b8;}
-.kstat-lbl{font-size:11px;color:var(--k-light);margin-top:2px;font-weight:500;}
-.status-bar{background:var(--k-dark);border-top:1px solid #4a4d38;padding:6px 24px;display:flex;align-items:center;gap:8px;}
-.status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.status-dot.ok{background:#6ab04c;}.status-dot.loading{background:var(--k-amber);animation:pulse 1s infinite;}
-.status-dot.err{background:#e55039;}
-.status-text{font-size:11px;color:var(--k-light);}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.kstat-lbl{font-size:11px;color:var(--k-light);margin-top:2px;}
+.sbar{background:var(--k-dark);border-top:1px solid #4a4d38;padding:6px 24px;display:flex;align-items:center;gap:8px;}
+.sdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:#6ab04c;}
+.sdot.spin-dot{background:var(--k-amber);animation:pulse 1s infinite;}
+.sdot.err{background:#e55039;}
+.stxt{font-size:11px;color:var(--k-light);}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
 .ktable-wrap{overflow-x:auto;margin:16px;border-radius:10px;border:1px solid var(--k-border);background:var(--k-card);box-shadow:0 2px 8px rgba(58,61,46,.08);}
-table.main-t{border-collapse:collapse;width:100%;font-size:12px;}
-table.main-t th{background:var(--k-dark);color:var(--k-pale);font-weight:600;padding:7px 3px;text-align:center;border-bottom:1px solid #4a4d38;border-right:1px solid #4a4d38;white-space:nowrap;}
-table.main-t th.nc{min-width:130px;text-align:right;padding-right:14px;font-size:11px;position:sticky;right:0;z-index:3;background:var(--k-dark);}
-table.main-t td{padding:5px 3px;text-align:center;border-bottom:.5px solid var(--k-border);border-right:.5px solid var(--k-border);}
-table.main-t td.ncell{text-align:right;padding:7px 14px;background:var(--k-card);position:sticky;right:0;z-index:1;border-right:2px solid var(--k-border);min-width:130px;}
-table.main-t tr:hover td{background:rgba(168,173,126,.08);}
-table.main-t tr:hover td.ncell{background:#f2f5e8;}
+table.mt{border-collapse:collapse;width:100%;font-size:12px;}
+table.mt th{background:var(--k-dark);color:var(--k-pale);font-weight:600;padding:7px 3px;text-align:center;border-bottom:1px solid #4a4d38;border-right:1px solid #4a4d38;white-space:nowrap;}
+table.mt th.nc{min-width:130px;text-align:right;padding-right:14px;font-size:11px;position:sticky;right:0;z-index:3;background:var(--k-dark);}
+table.mt td{padding:5px 3px;text-align:center;border-bottom:.5px solid var(--k-border);border-right:.5px solid var(--k-border);}
+table.mt td.ncell{text-align:right;padding:7px 14px;background:var(--k-card);position:sticky;right:0;z-index:1;border-right:2px solid var(--k-border);min-width:130px;}
+table.mt tr:hover td{background:rgba(168,173,126,.08);}
+table.mt tr:hover td.ncell{background:#f2f5e8;}
 .nm{font-size:13px;font-weight:600;color:var(--k-dark);}
 .nr{font-size:10px;color:var(--k-muted);margin-top:2px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
 td.dc{min-width:28px;}
@@ -49,7 +41,7 @@ td.dc.shab{background:#eeeee5;}
 td.dc.con{background:var(--k-amber-bg);}
 td.dc.con::after{content:'';display:block;width:7px;height:7px;border-radius:50%;background:var(--k-amber);margin:0 auto;}
 td.dc.tdy{border-top:2px solid var(--k-base);border-bottom:2px solid var(--k-base);background:rgba(122,127,85,.07);}
-table.main-t th.tdy{background:#4a5230!important;border-top:2px solid var(--k-light)!important;}
+table.mt th.tdy{background:#4a5230!important;border-top:2px solid var(--k-light)!important;}
 tr:last-child td{border-bottom:none;}th:last-child,td:last-child{border-right:none;}
 .rp{display:inline-block;font-size:10px;padding:2px 7px;border-radius:20px;font-weight:600;}
 .rs{background:#e1f0e6;color:#2a5e36;}.rn{background:#e6eaf0;color:#2a3a5e;}.rk{background:#f0e6f0;color:#5e2a5e;}.rm{background:#faeedd;color:#7a4a0a;}
@@ -59,8 +51,8 @@ tr:last-child td{border-bottom:none;}th:last-child,td:last-child{border-right:no
 .legend{display:flex;gap:14px;align-items:center;padding:10px 20px;border-top:1px solid var(--k-border);background:var(--k-card);border-radius:0 0 10px 10px;margin:0 16px 16px;flex-wrap:wrap;}
 .li{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--k-muted);}
 .ld{width:11px;height:11px;border-radius:3px;}
-.spin{display:inline-block;animation:spin .8s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg);}}
+.spin{animation:rot .7s linear infinite;display:inline-block;}
+@keyframes rot{to{transform:rotate(360deg);}}
 </style>
 </head>
 <body>
@@ -68,15 +60,9 @@ tr:last-child td{border-bottom:none;}th:last-child,td:last-child{border-right:no
 <div class="kheader">
   <div class="kheader-left">
     <div class="klogo">🛡️</div>
-    <div>
-      <h1>צוות מבצעים</h1>
-      <p>מילואים תשפ"ו &nbsp;·&nbsp; 28.6 – 18.9.2026</p>
-    </div>
+    <div><h1>צוות מבצעים</h1><p>מילואים תשפ"ו · 28.6 – 18.9.2026</p></div>
   </div>
-  <div class="kbtn-row">
-    <button class="kbtn kbtn-sheet" onclick="openSheet()">📊 עריכה בשיט</button>
-    <button class="kbtn kbtn-refresh" onclick="loadData()"><span id="refreshIcon">🔄</span> רענן נתונים</button>
-  </div>
+  <button class="kbtn kbtn-refresh" onclick="loadData()"><span id="ri">🔄</span> רענן</button>
 </div>
 
 <div class="kstats">
@@ -86,13 +72,13 @@ tr:last-child td{border-bottom:none;}th:last-child,td:last-child{border-right:no
   <div class="kstat"><div class="kstat-num">83</div><div class="kstat-lbl">ימי מילואים</div></div>
 </div>
 
-<div class="status-bar">
-  <div class="status-dot loading" id="statusDot"></div>
-  <span class="status-text" id="statusText">טוען נתונים מגוגל שיט...</span>
+<div class="sbar">
+  <div class="sdot spin-dot" id="sd"></div>
+  <span class="stxt" id="st">טוען נתונים...</span>
 </div>
 
 <div class="ktable-wrap" id="tw">
-  <table class="main-t"><thead id="th"></thead><tbody id="tb"></tbody></table>
+  <table class="mt"><thead id="th"></thead><tbody id="tb"></tbody></table>
 </div>
 <div class="legend">
   <span style="font-size:11px;font-weight:700;color:var(--k-muted)">מקרא:</span>
@@ -106,90 +92,79 @@ tr:last-child td{border-bottom:none;}th:last-child,td:last-child{border-right:no
 </div>
 
 <script>
-const SHEET_ID = '1wWmmStmT7Xx0X_2iBDt_Bu7lLmTp47WE';
-const PUB_ID = '2PACX-1vQXIJJc-KoIBc3HLoQCA3gJdR4_IXNAp0rHiq0v7P4cE38pIzEM8Dfu3c6YGrC4NA';
-const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`;
-const MEMBERS_URL = `https://docs.google.com/spreadsheets/d/e/${PUB_ID}/pub?gid=2053818780&single=true&output=csv`;
-const CONSTRAINTS_URL = `https://docs.google.com/spreadsheets/d/e/${PUB_ID}/pub?gid=896959266&single=true&output=csv`;
+const PUB = '2PACX-1vQXIJJc-KoIBc3HLoQCA3gJdR4_IXNAp0rHiq0v7P4cE38pIzEM8Dfu3c6YGrC4NA';
+const M_URL = `https://docs.google.com/spreadsheets/d/e/${PUB}/pub?gid=2053818780&single=true&output=csv`;
+const C_URL = `https://docs.google.com/spreadsheets/d/e/${PUB}/pub?gid=896959266&single=true&output=csv`;
 
-const S=new Date('2026-06-28'),E=new Date('2026-09-18'),TODAY=new Date();
-let members=[],constraints=[],tidx=-1;
+const S=new Date('2026-06-28'), E=new Date('2026-09-18'), TODAY=new Date();
+let members=[], constraints=[], tidx=-1;
 
-function getDates(){const d=[],c=new Date(S);while(c<=E){d.push(new Date(c));c.setDate(c.getDate()+1);}return d;}
-const DATES=getDates();
+function gd(){const d=[],c=new Date(S);while(c<=E){d.push(new Date(c));c.setDate(c.getDate()+1);}return d;}
+const DATES=gd();
 const HM=['','ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר'];
 const HD=['א','ב','ג','ד','ה','ו','ש'];
 function dk(d){return d.toISOString().slice(0,10);}
 const TDK=dk(TODAY);
 function rc(r){if(r==='סמבצ')return'rs';if(r==='סמנא')return'rn';if(r==='סמקש')return'rk';if(r==='מודיעין')return'rm';return'';}
 
-function setStatus(type, msg){
-  const dot=document.getElementById('statusDot');
-  const txt=document.getElementById('statusText');
-  dot.className='status-dot '+type;
-  txt.textContent=msg;
+function setS(type,msg){
+  const d=document.getElementById('sd'), t=document.getElementById('st');
+  d.className='sdot'+(type==='load'?' spin-dot':type==='err'?' err':'');
+  t.textContent=msg;
 }
 
 function parseCSV(text){
-  const lines=text.trim().split('\n').slice(1); // skip header
-  return lines.map(l=>{
-    const cols=[];
-    let cur='',inQ=false;
-    for(let i=0;i<l.length;i++){
-      if(l[i]==='"'){inQ=!inQ;}
-      else if(l[i]===','&&!inQ){cols.push(cur.trim());cur='';}
-      else cur+=l[i];
+  const lines=text.trim().split('\n');
+  if(lines.length<2) return [];
+  return lines.slice(1).map(line=>{
+    const cols=[], len=line.length;
+    let cur='', inQ=false;
+    for(let i=0;i<len;i++){
+      const ch=line[i];
+      if(ch==='"'){inQ=!inQ;}
+      else if(ch===','&&!inQ){cols.push(cur.trim());cur='';}
+      else cur+=ch;
     }
     cols.push(cur.trim());
     return cols;
-  }).filter(r=>r[0]);
-}
-
-async function fetchCSV(url){
-  const res=await fetch(url+'&cachebust='+Date.now());
-  return await res.text();
-}
-
-function parseMembers(rows){
-  return rows.map(r=>({
-    name: r[0]||'',
-    round: r[1]||'',
-    role: r[2]||'',
-    status: r[3]||''
-  })).filter(m=>m.name);
-}
-
-function parseConstraints(rows){
-  return rows.map(r=>({
-    member: r[0]||'',
-    from: (r[1]||'').slice(0,10),
-    to: (r[2]||'').slice(0,10)
-  })).filter(c=>c.member&&c.from&&c.to);
+  }).filter(r=>r.length>0&&r[0]&&r[0].trim());
 }
 
 async function loadData(){
-  const icon=document.getElementById('refreshIcon');
-  icon.className='spin';
-  setStatus('loading','טוען נתונים מגוגל שיט...');
+  document.getElementById('ri').className='spin';
+  setS('load','טוען נתונים מגוגל שיט...');
   try{
-    const [mText, cText] = await Promise.all([
-      fetchCSV(MEMBERS_URL),
-      fetchCSV(CONSTRAINTS_URL)
+    const t=Date.now();
+    const proxy='https://corsproxy.io/?';
+    const [mr, cr]=await Promise.all([
+      fetch(proxy+encodeURIComponent(M_URL+'&t='+t)).then(r=>r.text()),
+      fetch(proxy+encodeURIComponent(C_URL+'&t='+t)).then(r=>r.text())
     ]);
-    members = parseMembers(parseCSV(mText));
-    constraints = parseConstraints(parseCSV(cText));
-    const now = new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
-    setStatus('ok',`עודכן בהצלחה · ${members.length} חברים · ${constraints.length} אילוצים · ${now}`);
+
+    const mRows=parseCSV(mr);
+    const cRows=parseCSV(cr);
+
+    members=mRows.map(r=>({
+      name:(r[0]||'').trim(),
+      round:(r[1]||'').trim(),
+      role:(r[2]||'').trim(),
+      status:(r[3]||'').trim()
+    })).filter(m=>m.name);
+
+    constraints=cRows.map(r=>({
+      member:(r[0]||'').trim(),
+      from:(r[1]||'').trim(),
+      to:(r[2]||'').trim()
+    })).filter(c=>c.member&&c.from&&c.to);
+
+    const now=new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
+    setS('ok',`✓ עודכן ${now} · ${members.length} חברים · ${constraints.length} אילוצים`);
     render();
   }catch(e){
-    setStatus('err','שגיאה בטעינת הנתונים — בדקי שהשיט מפורסם לאינטרנט');
+    setS('err','שגיאה בטעינת הנתונים: '+e.message);
     console.error(e);
   }
-  icon.className='';
-}
-
-function openSheet(){
-  window.open(SHEET_URL,'_blank');
+  document.getElementById('ri').className='';
 }
 
 function bh(){
@@ -219,16 +194,16 @@ function bb(){
   if(!members.length){
     const tr=document.createElement('tr'),td=document.createElement('td');
     td.colSpan=DATES.length+1;td.className='emsg';
-    td.innerHTML='<div style="font-size:32px;margin-bottom:8px">📊</div>לא נמצאו נתונים בגוגל שיט<br><span style="font-size:12px">וודאי שגיליון "חברים" מכיל נתונים ושהשיט מפורסם לאינטרנט</span>';
+    td.innerHTML='<div style="font-size:32px;margin-bottom:8px">📊</div>לא נמצאו נתונים<br><span style="font-size:12px">וודאי שגיליון "חברים" מכיל נתונים</span>';
     tr.appendChild(td);tb.appendChild(tr);
-  } else {
+  }else{
     members.forEach(m=>{
       if(m.status==='present')pc++;
       const tr=document.createElement('tr');
       const nd=document.createElement('td');nd.className='ncell';
-      let sb=m.status==='present'?'<span class="pres">מגיע ✓</span>':m.status==='absent'?'<span class="abs">לא מגיע</span>':'';
+      const sb=m.status==='present'?'<span class="pres">מגיע ✓</span>':m.status==='absent'?'<span class="abs">לא מגיע</span>':'';
       nd.innerHTML='<div class="nm">'+m.name+'</div><div class="nr">'
-        +(m.round?'<span style="color:var(--k-muted)">'+m.round+'</span>':'')
+        +(m.round?'<span>'+m.round+'</span>':'')
         +(m.role?' <span class="rp '+rc(m.role)+'">'+m.role+'</span>':'')
         +(sb?' '+sb:'')+'</div>';
       tr.appendChild(nd);
@@ -257,8 +232,7 @@ function render(){
   },150);
 }
 
-// Auto-refresh every 60 seconds
-setInterval(loadData, 60000);
+setInterval(loadData,60000);
 loadData();
 </script>
 </body>
