@@ -120,8 +120,8 @@ td.ncell.round-all { border-right: 4px solid var(--k-base) !important; }
 
 <script>
 const PUB = '2PACX-1vQXIJJc-KoIBc3HLoQCA3gJdR4_IXNAp0rHiq0v7P4cE38pIzEM8Dfu3c6YGrC4NA';
-const M_URL = `https://docs.google.com/spreadsheets/d/e/${PUB}/pub?gid=2053818780&single=true&output=csv`;
-const C_URL = `https://docs.google.com/spreadsheets/d/e/${PUB}/pub?gid=896959266&single=true&output=csv`;
+const M_URL = `https://docs.google.com/spreadsheets/d/e/${PUB}/pub?gid=309967777&single=true&output=csv`;
+const C_URL = `https://docs.google.com/spreadsheets/d/e/${PUB}/pub?gid=1518267182&single=true&output=csv`;
 const R_URL = `https://docs.google.com/spreadsheets/d/e/${PUB}/pub?gid=181659933&single=true&output=csv`;
 
 const S=new Date('2026-06-28'), E=new Date('2026-09-18'), TODAY=new Date();
@@ -171,11 +171,29 @@ async function loadData(){
   setS('load','טוען נתונים מגוגל שיט...');
   try{
     const t=Date.now();
-    const px = url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url+'&t='+t)}`;
+    // Try multiple proxies until one returns valid CSV
+    const fetchCSVRaw = async url => {
+      const proxies = [
+        u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+        u => `https://corsproxy.io/?${encodeURIComponent(u)}`,
+        u => `https://proxy.cors.sh/${u}`,
+      ];
+      for(const px of proxies){
+        try{
+          const r = await fetch(px(url)+'&_t='+t, {cache:'no-store'});
+          const txt = await r.text();
+          // Valid CSV has commas and no HTML tags
+          if(txt && txt.includes(',') && !txt.includes('<html') && !txt.includes('function n(') && txt.trim().length > 10){
+            return txt;
+          }
+        }catch(e){}
+      }
+      throw new Error('כל ה-proxy נכשלו');
+    };
     const [mr, cr, rr]=await Promise.all([
-      fetch(px(M_URL)).then(r=>r.text()),
-      fetch(px(C_URL)).then(r=>r.text()),
-      R_URL.includes('ROTATIONS_GID') ? Promise.resolve('') : fetch(px(R_URL)).then(r=>r.text())
+      fetchCSVRaw(M_URL),
+      fetchCSVRaw(C_URL),
+      R_URL.includes('ROTATIONS_GID') ? Promise.resolve('') : fetchCSVRaw(R_URL)
     ]);
 
     const mRows=parseCSV(mr);
