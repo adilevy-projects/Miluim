@@ -48,6 +48,11 @@ tr:last-child td{border-bottom:none;}th:last-child,td:last-child{border-right:no
 .pres{background:#e8f5e9;color:#2e7d32;font-size:10px;padding:2px 7px;border-radius:20px;font-weight:600;}
 .abs{background:#fdecea;color:#a32d2d;font-size:10px;padding:2px 7px;border-radius:20px;font-weight:600;}
 .emsg{text-align:center;padding:3rem;color:var(--k-muted);font-size:14px;line-height:2;}
+/* home days */
+td.dc.home{background:#e8e8e2;}
+td.dc.home.con{background:var(--k-amber-bg);}
+td.dc.home.con::after{content:'';display:block;width:7px;height:7px;border-radius:50%;background:var(--k-amber);margin:0 auto;}
+
 /* absent row */
 table.mt tr.row-absent td { opacity: .5; }
 table.mt tr.row-absent td.ncell { background: #f0f0ea; }
@@ -119,6 +124,28 @@ const M_URL = `https://docs.google.com/spreadsheets/d/e/${PUB}/pub?gid=205381878
 const C_URL = `https://docs.google.com/spreadsheets/d/e/${PUB}/pub?gid=896959266&single=true&output=csv`;
 
 const S=new Date('2026-06-28'), E=new Date('2026-09-18'), TODAY=new Date();
+
+// Rotation schedule — pre-calculated
+// A = home on these ranges, B = home on these ranges
+const HOME_A = [
+  ['2026-07-05','2026-07-10'],
+  ['2026-07-20','2026-07-25'],
+  ['2026-08-03','2026-08-08'],
+  ['2026-08-17','2026-08-22'],
+  ['2026-08-31','2026-09-05'],
+];
+const HOME_B = [
+  ['2026-07-13','2026-07-18'],
+  ['2026-07-27','2026-08-01'],
+  ['2026-08-10','2026-08-15'],
+  ['2026-08-24','2026-08-29'],
+  ['2026-09-07','2026-09-12'],
+];
+
+function isHome(dateKey, round){
+  const ranges = round==='סבב א' ? HOME_A : round==='סבב ב' ? HOME_B : [];
+  return ranges.some(([from,to])=>dateKey>=from&&dateKey<=to);
+}
 let members=[], constraints=[], tidx=-1;
 
 function gd(){const d=[],c=new Date(S);while(c<=E){d.push(new Date(c));c.setDate(c.getDate()+1);}return d;}
@@ -249,7 +276,9 @@ function bb(){
         const td=document.createElement('td');td.className='dc';
         if(d.getDay()===6)td.classList.add('shab');
         const k=dk(d);
-        if(constraints.some(c=>c.member===m.name&&k>=c.from&&k<=c.to))td.classList.add('con');
+        const hasConstraint=constraints.some(c=>c.member===m.name&&k>=c.from&&k<=c.to);
+        if(hasConstraint)td.classList.add('con');
+        if(isHome(k,m.round))td.classList.add('home');
         if(k===TDK)td.classList.add('tdy');
         tr.appendChild(td);
       });
