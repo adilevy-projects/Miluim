@@ -122,28 +122,15 @@ td.ncell.round-all { border-right: 4px solid var(--k-base) !important; }
 const PUB = '2PACX-1vQXIJJc-KoIBc3HLoQCA3gJdR4_IXNAp0rHiq0v7P4cE38pIzEM8Dfu3c6YGrC4NA';
 const M_URL = `https://docs.google.com/spreadsheets/d/e/${PUB}/pub?gid=2053818780&single=true&output=csv`;
 const C_URL = `https://docs.google.com/spreadsheets/d/e/${PUB}/pub?gid=896959266&single=true&output=csv`;
+const R_URL = `https://docs.google.com/spreadsheets/d/e/${PUB}/pub?gid=ROTATIONS_GID&single=true&output=csv`;
 
 const S=new Date('2026-06-28'), E=new Date('2026-09-18'), TODAY=new Date();
 
-// Rotation schedule — pre-calculated
-// A = home on these ranges, B = home on these ranges
-const HOME_A = [
-  ['2026-07-05','2026-07-10'],
-  ['2026-07-20','2026-07-25'],
-  ['2026-08-03','2026-08-08'],
-  ['2026-08-17','2026-08-22'],
-  ['2026-08-31','2026-09-05'],
-];
-const HOME_B = [
-  ['2026-07-13','2026-07-18'],
-  ['2026-07-27','2026-08-01'],
-  ['2026-08-10','2026-08-15'],
-  ['2026-08-24','2026-08-29'],
-  ['2026-09-07','2026-09-12'],
-];
+// Rotation schedule — loaded dynamically from sheet
+let rotations = {}; // { 'סבב א': [['from','to'],...], 'סבב ב': [...] }
 
 function isHome(dateKey, round){
-  const ranges = round==='סבב א' ? HOME_A : round==='סבב ב' ? HOME_B : [];
+  const ranges = rotations[round] || [];
   return ranges.some(([from,to])=>dateKey>=from&&dateKey<=to);
 }
 let members=[], constraints=[], tidx=-1;
@@ -185,13 +172,15 @@ async function loadData(){
   try{
     const t=Date.now();
     const proxy='https://corsproxy.io/?';
-    const [mr, cr]=await Promise.all([
+    const [mr, cr, rr]=await Promise.all([
       fetch(proxy+encodeURIComponent(M_URL+'&t='+t)).then(r=>r.text()),
-      fetch(proxy+encodeURIComponent(C_URL+'&t='+t)).then(r=>r.text())
+      fetch(proxy+encodeURIComponent(C_URL+'&t='+t)).then(r=>r.text()),
+      R_URL.includes('ROTATIONS_GID') ? Promise.resolve('') : fetch(proxy+encodeURIComponent(R_URL+'&t='+t)).then(r=>r.text())
     ]);
 
     const mRows=parseCSV(mr);
     const cRows=parseCSV(cr);
+    const rRows=rr ? parseCSV(rr) : [];
 
     members=mRows.map(r=>({
       name:(r[0]||'').trim(),
@@ -205,6 +194,26 @@ async function loadData(){
       from:(r[1]||'').trim(),
       to:(r[2]||'').trim()
     })).filter(c=>c.member&&c.from&&c.to);
+
+    // Build rotations map from sheet
+    if(rRows.length){
+      rotations={};
+      rRows.forEach(r=>{
+        const round=(r[0]||'').trim();
+        const from=(r[1]||'').trim();
+        const to=(r[2]||'').trim();
+        if(round&&from&&to){
+          if(!rotations[round])rotations[round]=[];
+          rotations[round].push([from,to]);
+        }
+      });
+    } else {
+      // fallback hardcoded
+      rotations={
+        'סבב א':[['2026-07-05','2026-07-10'],['2026-07-20','2026-07-25'],['2026-08-03','2026-08-08'],['2026-08-17','2026-08-22'],['2026-08-31','2026-09-05']],
+        'סבב ב':[['2026-07-13','2026-07-18'],['2026-07-27','2026-08-01'],['2026-08-10','2026-08-15'],['2026-08-24','2026-08-29'],['2026-09-07','2026-09-12']]
+      };
+    }
 
     const now=new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
     setS('ok',`✓ עודכן ${now} · ${members.length} חברים · ${constraints.length} אילוצים`);
