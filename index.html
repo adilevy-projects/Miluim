@@ -171,11 +171,11 @@ async function loadData(){
   setS('load','טוען נתונים מגוגל שיט...');
   try{
     const t=Date.now();
-    const proxy='https://corsproxy.io/?';
+    const px = url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url+'&t='+t)}`;
     const [mr, cr, rr]=await Promise.all([
-      fetch(proxy+encodeURIComponent(M_URL+'&t='+t)).then(r=>r.text()),
-      fetch(proxy+encodeURIComponent(C_URL+'&t='+t)).then(r=>r.text()),
-      R_URL.includes('ROTATIONS_GID') ? Promise.resolve('') : fetch(proxy+encodeURIComponent(R_URL+'&t='+t)).then(r=>r.text())
+      fetch(px(M_URL)).then(r=>r.text()),
+      fetch(px(C_URL)).then(r=>r.text()),
+      R_URL.includes('ROTATIONS_GID') ? Promise.resolve('') : fetch(px(R_URL)).then(r=>r.text())
     ]);
 
     const mRows=parseCSV(mr);
