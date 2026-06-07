@@ -115,7 +115,7 @@ table.sum-t th:last-child,table.sum-t td:last-child{border-right:none;}
 </div>
 
 <div style="margin:16px;border-radius:10px;border:1px solid var(--k-border);background:var(--k-card);box-shadow:0 2px 8px rgba(58,61,46,.08);overflow:hidden;">
-  <div style="overflow-x:auto;overflow-y:auto;max-height:calc(2*38px + 8*36px);" id="tw">
+  <div style="overflow-x:auto;overflow-y:auto;max-height:calc(76px + 8*36px);" id="tw">
     <table class="mt" id="mainTable" style="border-collapse:collapse;">
       <thead id="th" style="position:sticky;top:0;z-index:4;"></thead>
       <tbody id="tb"></tbody>
@@ -347,7 +347,8 @@ function bb(){
 }
 
 function buildSummary(){
-  const roles = ['סמבצ','סמנא','סמקש','מט','מודיעין'];
+  // סמבצ = everyone who is NOT סמנא/סמקש/מט
+  const namedRoles = ['סמנא','סמקש','מט'];
   // Build header (same as main)
   const sh = document.getElementById('sh');
   sh.innerHTML = '';
@@ -373,9 +374,15 @@ function buildSummary(){
   // Build rows
   const sb = document.getElementById('sb2');
   sb.innerHTML='';
-  const rowLabels = ['סה"כ בבסיס', ...roles.map(r=>'סה"כ '+r)];
-  
-  rowLabels.forEach((label,ri)=>{
+  const rowDefs = [
+    {label:'סה"כ בבסיס', fn: m=>true},
+    {label:'סה"כ סמבצ',  fn: m=>!namedRoles.includes(m.role)},
+    {label:'סה"כ סמנא',  fn: m=>m.role==='סמנא'},
+    {label:'סה"כ סמקש',  fn: m=>m.role==='סמקש'},
+    {label:'סה"כ מט',    fn: m=>m.role==='מט'},
+  ];
+
+  rowDefs.forEach(({label,fn})=>{
     const tr=document.createElement('tr');
     const ntd=document.createElement('td');
     ntd.className='nc'; ntd.textContent=label; tr.appendChild(ntd);
@@ -386,20 +393,13 @@ function buildSummary(){
       if(d.getDay()===6) td.classList.add('shab');
       if(k===TDK) td.classList.add('tdy');
       
-      // Count members in base on this day with this role
       let count=0;
       members.forEach(m=>{
-        if(m.status==='absent') return; // not coming at all
+        if(m.status==='absent') return;
         const home=isHome(k,m);
         const constrained=constraints.some(c=>c.member===m.name&&k>=c.from&&k<=c.to);
-        if(home||constrained) return; // not in base
-        // In base!
-        if(ri===0){ // total
-          count++;
-        } else {
-          const role=roles[ri-1];
-          if(m.role===role) count++;
-        }
+        if(home||constrained) return;
+        if(fn(m)) count++;
       });
       
       td.textContent = count || '';
