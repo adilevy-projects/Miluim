@@ -111,6 +111,7 @@ tr:last-child td{border-bottom:none;}th:last-child,td:last-child{border-right:no
 const PUB = '2PACX-1vQXIJJc-KoIBc3HLoQCA3gJdR4_IXNAp0rHiq0v7P4cE38pIzEM8Dfu3c6YGrC4NA';
 const M_URL = `https://docs.google.com/spreadsheets/d/e/${PUB}/pub?gid=309967777&single=true&output=csv`;
 const C_URL = `https://docs.google.com/spreadsheets/d/e/${PUB}/pub?gid=1518267182&single=true&output=csv`;
+const R_URL = `https://docs.google.com/spreadsheets/d/e/${PUB}/pub?gid=181659933&single=true&output=csv`;
 
 const S=new Date('2026-06-28'),E=new Date('2026-09-18'),TODAY=new Date();
 let members=[],constraints=[],tidx=-1;
@@ -122,15 +123,26 @@ const HD=['א','ב','ג','ד','ה','ו','ש'];
 function dk(d){return d.toISOString().slice(0,10);}
 const TDK=dk(TODAY);
 function rc(r){if(r==='סמבצ')return'rs';if(r==='סמנא')return'rn';if(r==='סמקש')return'rk';if(r==='מודיעין')return'rm';return'';}
-// Default rotation schedule
-const DEFAULT_ROTATIONS = {
-  'סבב א': [['2026-07-02','2026-07-07'],['2026-07-16','2026-07-21'],['2026-07-30','2026-08-04'],['2026-08-13','2026-08-18'],['2026-08-27','2026-09-01']],
-  'סבב ב': [['2026-07-09','2026-07-14'],['2026-07-23','2026-07-28'],['2026-08-06','2026-08-11'],['2026-08-20','2026-08-25'],['2026-09-03','2026-09-08']],
-};
+// Default rotation schedule — loaded from sheet
+let DEFAULT_ROTATIONS = {};
+
 function isHome(k,m){
   const custom=(m.cycles||[]).filter(c=>c.from&&c.to);
   if(!m.useDefault&&custom.length>0) return custom.some(c=>k>=c.from&&k<=c.to);
   return (DEFAULT_ROTATIONS[m.round]||[]).some(([f,t])=>k>=f&&k<=t);
+}
+
+// Normalize date string to YYYY-MM-DD
+function normDate(v){
+  if(!v)return'';
+  const s=(v||'').trim();
+  if(!s)return'';
+  // Already YYYY-MM-DD
+  if(/^\d{4}-\d{2}-\d{2}$/.test(s))return s;
+  // Try to parse other formats
+  const d=new Date(s);
+  if(!isNaN(d))return dk(d);
+  return s;
 }
 
 function setS(type,msg){
@@ -175,23 +187,36 @@ async function loadData(){
   document.getElementById('ri').className='spin';
   setS('loading','טוען נתונים מגוגל שיט...');
   try{
-    const [mt,ct]=await Promise.all([fetchOne(M_URL),fetchOne(C_URL)]);
+    const [mt,ct,rt]=await Promise.all([fetchOne(M_URL),fetchOne(C_URL),fetchOne(R_URL)]);
 
     const mRows=parseCSV(mt);
     const cRows=parseCSV(ct);
+    const rRows=parseCSV(rt);
+
+    // Build DEFAULT_ROTATIONS from sheet
+    DEFAULT_ROTATIONS={};
+    rRows.forEach(r=>{
+      const round=(r[0]||'').trim();
+      const from=normDate(r[1]);
+      const to=normDate(r[2]);
+      if(round&&from&&to){
+        if(!DEFAULT_ROTATIONS[round])DEFAULT_ROTATIONS[round]=[];
+        DEFAULT_ROTATIONS[round].push([from,to]);
+      }
+    });
 
     members=mRows.map(r=>({
       name:(r[0]||'').trim(),
       round:(r[1]||'').trim(),
       role:(r[2]||'').trim(),
       status:(r[3]||'').trim(),
-      useDefault: (r[4]||'').trim().toUpperCase()==='TRUE',
+      useDefault: ['TRUE','true','1','כן','yes'].includes((r[4]||'').trim()),
       cycles: [
-        {from:(r[5]||'').trim(), to:(r[6]||'').trim()},
-        {from:(r[7]||'').trim(), to:(r[8]||'').trim()},
-        {from:(r[9]||'').trim(), to:(r[10]||'').trim()},
-        {from:(r[11]||'').trim(), to:(r[12]||'').trim()},
-        {from:(r[13]||'').trim(), to:(r[14]||'').trim()},
+        {from:normDate(r[5]), to:normDate(r[6])},
+        {from:normDate(r[7]), to:normDate(r[8])},
+        {from:normDate(r[9]), to:normDate(r[10])},
+        {from:normDate(r[11]), to:normDate(r[12])},
+        {from:normDate(r[13]), to:normDate(r[14])},
       ]
     })).filter(m=>m.name);
 
