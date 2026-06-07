@@ -22,7 +22,7 @@ html,body{font-family:'Rubik',sans-serif;background:var(--k-bg);color:var(--k-te
 .kstat-lbl{font-size:11px;color:var(--k-light);margin-top:2px;}
 .sbar{background:var(--k-dark);border-top:1px solid #4a4d38;padding:6px 24px;display:flex;align-items:center;gap:8px;}
 .sdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:#6ab04c;}
-.sdot.spin-dot{background:var(--k-amber);animation:pulse 1s infinite;}
+.sdot.loading{background:var(--k-amber);animation:pulse 1s infinite;}
 .sdot.err{background:#e55039;}
 .stxt{font-size:11px;color:var(--k-light);}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
@@ -34,12 +34,25 @@ table.mt td{padding:5px 3px;text-align:center;border-bottom:.5px solid var(--k-b
 table.mt td.ncell{text-align:right;padding:7px 14px;background:var(--k-card);position:sticky;right:0;z-index:1;border-right:2px solid var(--k-border);min-width:130px;}
 table.mt tr:hover td{background:rgba(168,173,126,.08);}
 table.mt tr:hover td.ncell{background:#f2f5e8;}
+table.mt tr.row-absent td{opacity:.5;}
+table.mt tr.row-absent td.ncell{background:#f0f0ea;}
+table.mt tr.row-absent .nm{color:var(--k-muted);}
+td.ncell.round-a{border-right:4px solid #5b8dd9!important;}
+td.ncell.round-b{border-right:4px solid #5aaa72!important;}
+td.ncell.round-all{border-right:4px solid var(--k-base)!important;}
 .nm{font-size:13px;font-weight:600;color:var(--k-dark);}
 .nr{font-size:10px;color:var(--k-muted);margin-top:2px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+.round-badge{display:inline-block;font-size:9px;padding:1px 6px;border-radius:20px;font-weight:700;}
+.rb-a{background:#deeaf7;color:#2a4e8a;}
+.rb-b{background:#d8f0df;color:#1e6b35;}
+.rb-all{background:#e8ebd8;color:#3a3d2e;}
 td.dc{min-width:28px;}
 td.dc.shab{background:#eeeee5;}
+td.dc.home{background:#e2e2db;}
 td.dc.con{background:var(--k-amber-bg);}
 td.dc.con::after{content:'';display:block;width:7px;height:7px;border-radius:50%;background:var(--k-amber);margin:0 auto;}
+td.dc.home.con{background:var(--k-amber-bg);}
+td.dc.home.con::after{content:'';display:block;width:7px;height:7px;border-radius:50%;background:var(--k-amber);margin:0 auto;}
 td.dc.tdy{border-top:2px solid var(--k-base);border-bottom:2px solid var(--k-base);background:rgba(122,127,85,.07);}
 table.mt th.tdy{background:#4a5230!important;border-top:2px solid var(--k-light)!important;}
 tr:last-child td{border-bottom:none;}th:last-child,td:last-child{border-right:none;}
@@ -48,30 +61,7 @@ tr:last-child td{border-bottom:none;}th:last-child,td:last-child{border-right:no
 .pres{background:#e8f5e9;color:#2e7d32;font-size:10px;padding:2px 7px;border-radius:20px;font-weight:600;}
 .abs{background:#fdecea;color:#a32d2d;font-size:10px;padding:2px 7px;border-radius:20px;font-weight:600;}
 .emsg{text-align:center;padding:3rem;color:var(--k-muted);font-size:14px;line-height:2;}
-/* home days */
-td.dc.home{background:#e8e8e2;}
-td.dc.home.con{background:var(--k-amber-bg);}
-td.dc.home.con::after{content:'';display:block;width:7px;height:7px;border-radius:50%;background:var(--k-amber);margin:0 auto;}
-
-/* absent row */
-table.mt tr.row-absent td { opacity: .5; }
-table.mt tr.row-absent td.ncell { background: #f0f0ea; }
-table.mt tr.row-absent .nm { color: var(--k-muted); }
-
-/* round colors on name cell border */
-td.ncell.round-a { border-right: 4px solid #5b8dd9 !important; }
-td.ncell.round-b { border-right: 4px solid #5aaa72 !important; }
-td.ncell.round-c { border-right: 4px solid #c47c3a !important; }
-td.ncell.round-all { border-right: 4px solid var(--k-base) !important; }
-
-/* round badges */
-.round-badge { display:inline-block;font-size:9px;padding:1px 6px;border-radius:20px;font-weight:700; }
-.rb-a { background:#deeaf7;color:#2a4e8a; }
-.rb-b { background:#d8f0df;color:#1e6b35; }
-.rb-c { background:#fde8d0;color:#7a3e10; }
-.rb-all { background:#e8ebd8;color:#3a3d2e; }
-
-.legend{display:flex;gap:14px;align-items:center;padding:10px 20px;border-top:1px solid var(--k-border);background:var(--k-card);border-radius:0 0 10px 10px;margin:0 16px 16px;flex-wrap:wrap;}
+.legend{display:flex;gap:12px;align-items:center;padding:10px 20px;border-top:1px solid var(--k-border);background:var(--k-card);border-radius:0 0 10px 10px;margin:0 16px 16px;flex-wrap:wrap;}
 .li{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--k-muted);}
 .ld{width:11px;height:11px;border-radius:3px;}
 .spin{animation:rot .7s linear infinite;display:inline-block;}
@@ -96,7 +86,7 @@ td.ncell.round-all { border-right: 4px solid var(--k-base) !important; }
 </div>
 
 <div class="sbar">
-  <div class="sdot spin-dot" id="sd"></div>
+  <div class="sdot loading" id="sd"></div>
   <span class="stxt" id="st">טוען נתונים...</span>
 </div>
 
@@ -106,13 +96,12 @@ td.ncell.round-all { border-right: 4px solid var(--k-base) !important; }
 <div class="legend">
   <span style="font-size:11px;font-weight:700;color:var(--k-muted)">מקרא:</span>
   <div class="li"><div class="ld" style="background:var(--k-amber-bg);border:1px solid var(--k-amber)"></div>אילוץ</div>
+  <div class="li"><div class="ld" style="background:#e2e2db;border:1px solid #c8cba8"></div>בבית</div>
   <div class="li"><div class="ld" style="background:#eeeee5;border:1px solid #c8cba8"></div>שבת</div>
   <div class="li"><div class="ld" style="background:rgba(122,127,85,.15);border:2px solid var(--k-base)"></div>היום</div>
   <div class="li"><span class="round-badge rb-a">סבב א</span></div>
   <div class="li"><span class="round-badge rb-b">סבב ב</span></div>
-  <div class="li"><span class="round-badge rb-c">סבב ג</span></div>
-  <div class="li"><span class="round-badge rb-all">כל התקופה</span></div>
-  <div class="li" style="margin-right:8px"><span class="rp rs">סמבצ</span></div>
+  <div class="li" style="margin-right:6px"><span class="rp rs">סמבצ</span></div>
   <div class="li"><span class="rp rn">סמנא</span></div>
   <div class="li"><span class="rp rk">סמקש</span></div>
   <div class="li"><span class="rp rm">מודיעין</span></div>
@@ -122,18 +111,9 @@ td.ncell.round-all { border-right: 4px solid var(--k-base) !important; }
 const PUB = '2PACX-1vQXIJJc-KoIBc3HLoQCA3gJdR4_IXNAp0rHiq0v7P4cE38pIzEM8Dfu3c6YGrC4NA';
 const M_URL = `https://docs.google.com/spreadsheets/d/e/${PUB}/pub?gid=309967777&single=true&output=csv`;
 const C_URL = `https://docs.google.com/spreadsheets/d/e/${PUB}/pub?gid=1518267182&single=true&output=csv`;
-const R_URL = `https://docs.google.com/spreadsheets/d/e/${PUB}/pub?gid=181659933&single=true&output=csv`;
 
-const S=new Date('2026-06-28'), E=new Date('2026-09-18'), TODAY=new Date();
-
-// Rotation schedule — loaded dynamically from sheet
-let rotations = {}; // { 'סבב א': [['from','to'],...], 'סבב ב': [...] }
-
-function isHome(dateKey, round){
-  const ranges = rotations[round] || [];
-  return ranges.some(([from,to])=>dateKey>=from&&dateKey<=to);
-}
-let members=[], constraints=[], tidx=-1;
+const S=new Date('2026-06-28'),E=new Date('2026-09-18'),TODAY=new Date();
+let members=[],constraints=[],tidx=-1;
 
 function gd(){const d=[],c=new Date(S);while(c<=E){d.push(new Date(c));c.setDate(c.getDate()+1);}return d;}
 const DATES=gd();
@@ -142,19 +122,30 @@ const HD=['א','ב','ג','ד','ה','ו','ש'];
 function dk(d){return d.toISOString().slice(0,10);}
 const TDK=dk(TODAY);
 function rc(r){if(r==='סמבצ')return'rs';if(r==='סמנא')return'rn';if(r==='סמקש')return'rk';if(r==='מודיעין')return'rm';return'';}
+// Default rotation schedule
+const DEFAULT_ROTATIONS = {
+  'סבב א': [['2026-07-02','2026-07-07'],['2026-07-16','2026-07-21'],['2026-07-30','2026-08-04'],['2026-08-13','2026-08-18'],['2026-08-27','2026-09-01']],
+  'סבב ב': [['2026-07-09','2026-07-14'],['2026-07-23','2026-07-28'],['2026-08-06','2026-08-11'],['2026-08-20','2026-08-25'],['2026-09-03','2026-09-08']],
+};
+function isHome(k,m){
+  const custom=(m.cycles||[]).filter(c=>c.from&&c.to);
+  if(!m.useDefault&&custom.length>0) return custom.some(c=>k>=c.from&&k<=c.to);
+  return (DEFAULT_ROTATIONS[m.round]||[]).some(([f,t])=>k>=f&&k<=t);
+}
 
 function setS(type,msg){
-  const d=document.getElementById('sd'), t=document.getElementById('st');
-  d.className='sdot'+(type==='load'?' spin-dot':type==='err'?' err':'');
+  const d=document.getElementById('sd'),t=document.getElementById('st');
+  d.className='sdot'+(type==='loading'?' loading':type==='err'?' err':'');
   t.textContent=msg;
 }
 
 function parseCSV(text){
+  if(!text||!text.trim())return[];
   const lines=text.trim().split('\n');
-  if(lines.length<2) return [];
+  if(lines.length<2)return[];
   return lines.slice(1).map(line=>{
-    const cols=[], len=line.length;
-    let cur='', inQ=false;
+    const cols=[],len=line.length;
+    let cur='',inQ=false;
     for(let i=0;i<len;i++){
       const ch=line[i];
       if(ch==='"'){inQ=!inQ;}
@@ -166,45 +157,42 @@ function parseCSV(text){
   }).filter(r=>r.length>0&&r[0]&&r[0].trim());
 }
 
+async function fetchOne(url){
+  // Try direct fetch first (works when hosted on GitHub Pages)
+  try{
+    const r=await fetch(url,{cache:'no-store'});
+    const txt=await r.text();
+    if(txt&&!txt.includes('<html')&&!txt.includes('function n(')&&txt.includes(',')){
+      return txt;
+    }
+  }catch(e){}
+  // Fallback: allorigins
+  const r=await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,{cache:'no-store'});
+  return await r.text();
+}
+
 async function loadData(){
   document.getElementById('ri').className='spin';
-  setS('load','טוען נתונים מגוגל שיט...');
+  setS('loading','טוען נתונים מגוגל שיט...');
   try{
-    const t=Date.now();
-    // Try multiple proxies until one returns valid CSV
-    const fetchCSVRaw = async url => {
-      const proxies = [
-        u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
-        u => `https://corsproxy.io/?${encodeURIComponent(u)}`,
-        u => `https://proxy.cors.sh/${u}`,
-      ];
-      for(const px of proxies){
-        try{
-          const r = await fetch(px(url)+'&_t='+t, {cache:'no-store'});
-          const txt = await r.text();
-          // Valid CSV has commas and no HTML tags
-          if(txt && txt.includes(',') && !txt.includes('<html') && !txt.includes('function n(') && txt.trim().length > 10){
-            return txt;
-          }
-        }catch(e){}
-      }
-      throw new Error('כל ה-proxy נכשלו');
-    };
-    const [mr, cr, rr]=await Promise.all([
-      fetchCSVRaw(M_URL),
-      fetchCSVRaw(C_URL),
-      R_URL.includes('ROTATIONS_GID') ? Promise.resolve('') : fetchCSVRaw(R_URL)
-    ]);
+    const [mt,ct]=await Promise.all([fetchOne(M_URL),fetchOne(C_URL)]);
 
-    const mRows=parseCSV(mr);
-    const cRows=parseCSV(cr);
-    const rRows=rr ? parseCSV(rr) : [];
+    const mRows=parseCSV(mt);
+    const cRows=parseCSV(ct);
 
     members=mRows.map(r=>({
       name:(r[0]||'').trim(),
       round:(r[1]||'').trim(),
       role:(r[2]||'').trim(),
-      status:(r[3]||'').trim()
+      status:(r[3]||'').trim(),
+      useDefault: (r[4]||'').trim().toUpperCase()==='TRUE',
+      cycles: [
+        {from:(r[5]||'').trim(), to:(r[6]||'').trim()},
+        {from:(r[7]||'').trim(), to:(r[8]||'').trim()},
+        {from:(r[9]||'').trim(), to:(r[10]||'').trim()},
+        {from:(r[11]||'').trim(), to:(r[12]||'').trim()},
+        {from:(r[13]||'').trim(), to:(r[14]||'').trim()},
+      ]
     })).filter(m=>m.name);
 
     constraints=cRows.map(r=>({
@@ -213,31 +201,13 @@ async function loadData(){
       to:(r[2]||'').trim()
     })).filter(c=>c.member&&c.from&&c.to);
 
-    // Build rotations map from sheet
-    if(rRows.length){
-      rotations={};
-      rRows.forEach(r=>{
-        const round=(r[0]||'').trim();
-        const from=(r[1]||'').trim();
-        const to=(r[2]||'').trim();
-        if(round&&from&&to){
-          if(!rotations[round])rotations[round]=[];
-          rotations[round].push([from,to]);
-        }
-      });
-    } else {
-      // fallback hardcoded
-      rotations={
-        'סבב א':[['2026-07-05','2026-07-10'],['2026-07-20','2026-07-25'],['2026-08-03','2026-08-08'],['2026-08-17','2026-08-22'],['2026-08-31','2026-09-05']],
-        'סבב ב':[['2026-07-13','2026-07-18'],['2026-07-27','2026-08-01'],['2026-08-10','2026-08-15'],['2026-08-24','2026-08-29'],['2026-09-07','2026-09-12']]
-      };
-    }
+
 
     const now=new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
     setS('ok',`✓ עודכן ${now} · ${members.length} חברים · ${constraints.length} אילוצים`);
     render();
   }catch(e){
-    setS('err','שגיאה בטעינת הנתונים: '+e.message);
+    setS('err','שגיאה: '+e.message);
     console.error(e);
   }
   document.getElementById('ri').className='';
@@ -273,39 +243,36 @@ function bb(){
     td.innerHTML='<div style="font-size:32px;margin-bottom:8px">📊</div>לא נמצאו נתונים<br><span style="font-size:12px">וודאי שגיליון "חברים" מכיל נתונים</span>';
     tr.appendChild(td);tb.appendChild(tr);
   }else{
-    // sort: present/unknown first, absent last
-  const sorted=[...members].sort((a,b)=>{
-    if(a.status==='absent'&&b.status!=='absent')return 1;
-    if(a.status!=='absent'&&b.status==='absent')return -1;
-    return 0;
-  });
-  sorted.forEach(m=>{
+    const sorted=[...members].sort((a,b)=>{
+      if(a.status==='absent'&&b.status!=='absent')return 1;
+      if(a.status!=='absent'&&b.status==='absent')return -1;
+      return 0;
+    });
+    sorted.forEach(m=>{
       if(m.status==='present')pc++;
       const tr=document.createElement('tr');
       if(m.status==='absent')tr.classList.add('row-absent');
-
-      // round styling
-      let roundClass='', roundBadgeClass='', roundBadgeText='';
-      if(m.round==='סבב א'){roundClass='round-a';roundBadgeClass='rb-a';roundBadgeText='סבב א';}
-      else if(m.round==='סבב ב'){roundClass='round-b';roundBadgeClass='rb-b';roundBadgeText='סבב ב';}
-      else if(m.round==='סבב ג'){roundClass='round-c';roundBadgeClass='rb-c';roundBadgeText='סבב ג';}
-      else if(m.round==='כל התקופה'){roundClass='round-all';roundBadgeClass='rb-all';roundBadgeText='כל התקופה';}
-
+      let rClass='',rBadge='',rBadgeClass='';
+      if(m.round==='סבב א'){rClass='round-a';rBadge='סבב א';rBadgeClass='rb-a';}
+      else if(m.round==='סבב ב'){rClass='round-b';rBadge='סבב ב';rBadgeClass='rb-b';}
+      else if(m.round==='כל התקופה'){rClass='round-all';rBadge='כל התקופה';rBadgeClass='rb-all';}
       const nd=document.createElement('td');
-      nd.className='ncell'+(roundClass?' '+roundClass:'');
+      nd.className='ncell'+(rClass?' '+rClass:'');
       const sb=m.status==='present'?'<span class="pres">מגיע ✓</span>':m.status==='absent'?'<span class="abs">לא מגיע</span>':'';
+      const defBadge=m.useDefault
+        ?'<span style="font-size:9px;background:#e8ebd8;color:#3a3d2e;padding:1px 5px;border-radius:10px;font-weight:700">✓ דיפולט</span>'
+        :'<span style="font-size:9px;background:#fdf3d8;color:#7a4a0a;padding:1px 5px;border-radius:10px;font-weight:700">✎ מותאם</span>';
       nd.innerHTML='<div class="nm">'+m.name+'</div><div class="nr">'
-        +(roundBadgeText?'<span class="round-badge '+roundBadgeClass+'">'+roundBadgeText+'</span>':'')
+        +(rBadge?'<span class="round-badge '+rBadgeClass+'">'+rBadge+'</span>':'')
         +(m.role?' <span class="rp '+rc(m.role)+'">'+m.role+'</span>':'')
-        +(sb?' '+sb:'')+'</div>';
+        +' '+defBadge+(sb?' '+sb:'')+'</div>';
       tr.appendChild(nd);
       DATES.forEach(d=>{
         const td=document.createElement('td');td.className='dc';
-        if(d.getDay()===6)td.classList.add('shab');
         const k=dk(d);
-        const hasConstraint=constraints.some(c=>c.member===m.name&&k>=c.from&&k<=c.to);
-        if(hasConstraint)td.classList.add('con');
-        if(isHome(k,m.round))td.classList.add('home');
+        if(d.getDay()===6)td.classList.add('shab');
+        if(isHome(k,m))td.classList.add('home');
+        if(constraints.some(c=>c.member===m.name&&k>=c.from&&k<=c.to))td.classList.add('con');
         if(k===TDK)td.classList.add('tdy');
         tr.appendChild(td);
       });
